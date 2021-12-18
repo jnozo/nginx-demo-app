@@ -1,0 +1,4 @@
+apiVersion: v2
+name: nginx-demo
+description: Helm chart to deploy nginx demo application
+version: 1.0.0

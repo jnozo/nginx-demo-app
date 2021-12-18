@@ -1,0 +1,12 @@
+nginxDemo:
+  nginx:
+    image:
+      repository: "nginx"
+      tag: "1.21.4"
+      pullPolicy: IfNotPresent
+    port: 80
+  replicaCount: 2
+
+  service:
+    type: LoadBalancer
+    port: 80

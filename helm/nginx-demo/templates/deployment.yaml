@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nginx-demo.baseName" . }}
+  labels:
+    {{- include "nginx-demo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.nginxDemo.nginx.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "nginx-demo.labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "nginx-demo.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: nginx
+        image: "{{ .Values.nginxDemo.nginx.image.repository }}:{{ .Values.nginxDemo.nginx.image.tag }}"
+        imagePullPolicy: {{ .Values.nginxDemo.nginx.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.nginxDemo.nginx.port }}
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+      serviceAccountName: {{ include "nginx-demo.baseName" . }}
